@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    font-family: Lexend;
+}
+
+*{
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+body.stop-transitions * {
+    transition: none !important
+}
+
+.placeholder-color{
+    color: white;
+    font-weight: 400;
+}
+
+/* .konva-text{
+    cursor: pointer;
+    user-select: none;
+} */
