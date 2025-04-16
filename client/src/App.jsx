@@ -10,16 +10,7 @@ import Footer from './components/Footer'
 import Login from './components/Login'
 import { AppContext } from './context/AppContext'
 import DarkModeToggle from './components/DarkModeToggle';
-
-// const Redirect = ({ children }) => {
-//   const { token } = useContext(AppContext)
-//   const location = useLocation()
-
-//   if (!token && location !== '/') {
-//     return <Navigate to="/" replace/>
-//   }
-//   return children
-// }
+import Comments from './components/Comments';
 
 const App = () => {
   const {showLogin} = useContext(AppContext)
@@ -33,18 +24,11 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/result' element={<Result/>}/>
-          {/* element={
-            <Redirect>
-              <Result/>
-            </Redirect>  
-          }/> */}
           <Route path='/edit' element={<Editing/>}/>
-            {/* element={ 
-            <Redirect>
-              <Editing/>
-            </Redirect>
-          }/> */}
         </Routes>
+        <div className='my-10'>
+          <Comments/>
+        </div>
         <Footer/>
     </div>
   )

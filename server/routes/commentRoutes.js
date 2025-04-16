@@ -15,9 +15,6 @@ router.put('/:id', authenticate, updateComment);
 router.delete('/:id', authenticate, deleteComment);
 
 export default router;
-
-
-// import express from 'express';
 // import { 
 //   addComment, 
 //   getComments, 
