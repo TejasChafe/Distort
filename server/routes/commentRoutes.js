@@ -15,17 +15,3 @@ router.put('/:id', authenticate, updateComment);
 router.delete('/:id', authenticate, deleteComment);
 
 export default router;
-// import { 
-//   addComment, 
-//   getComments, 
-//   deleteComment 
-// } from '../controllers/commentController.js';
-// import userAuth from '../middlewares/auth.js';
-
-// const router = express.Router();
-
-// router.post('/', userAuth, addComment);
-// router.get('/', getComments);
-// router.delete('/', userAuth, deleteComment);
-
-// export default router;
