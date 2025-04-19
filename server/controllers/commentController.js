@@ -17,7 +17,7 @@ export const createComment = async (req, res) => {
       user: req.user.id,
     });
     const populated = await newComment.populate('user', 'name');
-    // console.log(populated)
+    console.log(populated)
     res.status(201).json({success:true, comment:populated});
   } catch (err) {
     res.status(500).json({ message: 'Failed to create comment' });

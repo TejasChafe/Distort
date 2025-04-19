@@ -4,12 +4,12 @@ import axios from "axios"
 
 export const generateImage = async(req, res) =>{
     try{
-        // console.log("Headers:", req.headers);
-        // console.log("Body:", req.body);
+        console.log("Headers:", req.headers);
+        console.log("Body:", req.body);
         const{userId, prompt} = req.body
-        // console.log("User:",userId)
+        console.log("User:",userId)
         const user = await userModel.findById(userId)
-        // console.log("user found:",user)
+        console.log("user found:",user)
         if(!user || !prompt){
             return res.json({success:false, message:'Missing Details'})
         }
