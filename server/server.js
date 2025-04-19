@@ -11,7 +11,9 @@ const app = express()
 
 app.use(express.json())
 app.use(cors({
-    origin:'https://distort-b.vercel.app/',
+    origin : 'https://distort-b.vercel.app/',
+    methods : ['POST','GET','PUT','DELETE','OPTIONS'],
+    credentials : true
 }))
 await connectDB()
 
