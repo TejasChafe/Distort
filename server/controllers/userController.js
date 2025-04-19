@@ -8,6 +8,14 @@ const registerUser = async(req, res)=>{
         if(!name || !email || !password){
             return res.json({success:false, message:'Missing Details'})
         }
+        const strongPasswordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+
+        if (!strongPasswordRegex.test(password)) {
+            return res.json({
+                success: false,
+                message: 'Password must be at least 8 characters long and include one uppercase letter, one number, and one special character'
+            })
+        }
         const salt = await bcrypt.genSalt(10)
         const hashedPwd = await bcrypt.hash(password, salt)
         const userData = {

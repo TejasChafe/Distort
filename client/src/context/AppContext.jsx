@@ -1,10 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 export const AppContext = createContext()
 
 const AppContextProvider = (props)=>{
+    const navigate = useNavigate()
     const [user, setUser] = useState(() => {
         const storedUser = localStorage.getItem('user');
         return storedUser ? JSON.parse(storedUser) : null;
@@ -60,6 +62,7 @@ const AppContextProvider = (props)=>{
         localStorage.removeItem('user')
         setToken('')
         setUser(null)
+        navigate('/')
     }
     
     const value = { user, setUser, showLogin, setShowLogin, backendUrl, token, setToken, logout, generateImage, darkMode, toggleDarkMode}
