@@ -106,12 +106,8 @@ const Comments = () => {
             placeholder="Write a comment..."
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            rows={2}
-          />
-          <button
-            type="submit"
-            className="mt-2 px-4 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
-          >
+            rows={2}/>
+          <button type="submit" className="mt-2 px-4 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
             Post Comment
           </button>
         </form>
@@ -131,26 +127,15 @@ const Comments = () => {
 
             {editingCommentId === comment._id ? (
               <>
-                <textarea
-                  className="w-full p-2 mb-2 rounded border dark:bg-gray-600 dark:text-white"
-                  rows={2}
-                  value={editedText}
-                  onChange={(e) => setEditedText(e.target.value)}
-                />
+                <textarea className="w-full p-2 mb-2 rounded border dark:bg-gray-600 dark:text-white" rows={2} value={editedText} onChange={(e) => setEditedText(e.target.value)}/>
                 <div className="flex space-x-2">
-                  <button
-                    onClick={() => handleUpdate(comment._id)}
-                    className="text-xs text-green-500 hover:underline"
-                  >
+                  <button onClick={() => handleUpdate(comment._id)} className="text-xs text-green-500 hover:underline">
                     Save
                   </button>
-                  <button
-                    onClick={() => {
-                      setEditingCommentId(null);
-                      setEditedText('');
-                    }}
-                    className="text-xs text-gray-500 hover:underline"
-                  >
+                  <button onClick={() => {
+                    setEditingCommentId(null);
+                    setEditedText('');
+                  }} className="text-xs text-gray-500 hover:underline">
                     Cancel
                   </button>
                 </div>
@@ -160,16 +145,10 @@ const Comments = () => {
                 <p className="text-sm text-gray-700 dark:text-gray-300">{comment.text}</p>
                 {user && user._id === comment.user?._id && (
                   <div className="mt-2 flex space-x-2">
-                    <button
-                      onClick={() => handleEdit(comment._id, comment.text)}
-                      className="text-xs text-blue-500 hover:underline"
-                    >
+                    <button onClick={() => handleEdit(comment._id, comment.text)} className="text-xs text-blue-500 hover:underline">
                       Edit
                     </button>
-                    <button
-                      onClick={() => handleDelete(comment._id)}
-                      className="text-xs text-red-500 hover:underline"
-                    >
+                    <button onClick={() => handleDelete(comment._id)} className="text-xs text-red-500 hover:underline">
                       Delete
                     </button>
                   </div>

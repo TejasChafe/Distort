@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import { assets } from '../assets/assets'
 import { AppContext } from '../context/AppContext'
 import axios from 'axios'
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     const [state, setState] = useState('Login')
@@ -15,12 +16,9 @@ const Login = () => {
     const onSubmitHandler = async(e) =>{
         e.preventDefault();
         try {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                return toast.error("Please enter a valid email address");
-            }
             if(state === 'Login'){
                 const{data} = await axios.post(backendUrl + '/api/user/login', {email, password})
+                console.log(data)
                 if(data.success){
                     setToken(data.token)
                     setUser(data.user)
@@ -45,7 +43,8 @@ const Login = () => {
             }     
         } 
         catch (error) {
-            toast.error(error.message)            
+            const errorMessage = error.response?.data?.message || error.message || "An error occurred";
+            toast.error(errorMessage);          
         }
     }
 
