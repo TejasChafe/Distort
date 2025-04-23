@@ -74,8 +74,8 @@ const ImageEditor = () => {
     ctx.fillStyle = overlay.color
     ctx.textAlign = "center"
     ctx.textBaseline = "middle"
-    ctx.shadowColor = "#000"
-    ctx.shadowBlur = 4
+    // ctx.shadowColor = "#000"
+    // ctx.shadowBlur = 4
     const x = (overlay.x / 100) * canvasWidth
     const y = (overlay.y / 100) * canvasHeight
     ctx.fillText(overlay.text, x, y)
@@ -337,7 +337,7 @@ const ImageEditor = () => {
                             cursor: "move",
                             userSelect: "none",
                             pointerEvents: "auto",
-                            textShadow: "0 0 4px #000, 0 0 2px #000",
+                            // textShadow: "0 0 4px #000, 0 0 2px #000",
                             left: 0,
                             top: 0,
                             zIndex: 10,
