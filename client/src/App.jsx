@@ -11,6 +11,7 @@ import Login from './components/Login'
 import { AppContext } from './context/AppContext'
 import DarkModeToggle from './components/DarkModeToggle';
 import Comments from './components/Comments';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
   const {showLogin} = useContext(AppContext)
@@ -23,8 +24,14 @@ const App = () => {
       {showLogin && <Login/>}
         <Routes>
           <Route path='/' element={<Home/>}/>
-          <Route path='/result' element={<Result/>}/>
-          <Route path='/edit' element={<Editing/>}/>
+          <Route path='/result' element={
+            <ProtectedRoute>
+              <Result/>
+            </ProtectedRoute>}/>
+          <Route path='/edit' element={
+            <ProtectedRoute>
+              <Editing/>
+            </ProtectedRoute>}/>
         </Routes>
         <div className='my-10'>
           <Comments/>

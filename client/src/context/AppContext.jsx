@@ -17,6 +17,7 @@ const AppContextProvider = (props)=>{
         const saved = localStorage.getItem('darkMode');
         return saved ? JSON.parse(saved) : window.matchMedia('(prefers-color-scheme:dark)').matches;
     });
+    const isLoggedIn = !!user;
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -65,7 +66,7 @@ const AppContextProvider = (props)=>{
         navigate('/')
     }
     
-    const value = { user, setUser, showLogin, setShowLogin, backendUrl, token, setToken, logout, generateImage, darkMode, toggleDarkMode}
+    const value = { user, setUser, showLogin, setShowLogin, backendUrl, token, setToken, logout, generateImage, darkMode, toggleDarkMode, isLoggedIn}
     return(
         <AppContext.Provider value={value}>
             {props.children}
