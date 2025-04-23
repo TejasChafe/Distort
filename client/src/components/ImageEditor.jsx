@@ -1,10 +1,10 @@
-import React, { useState, useRef } from "react";
-import { GrRotateLeft, GrRotateRight } from "react-icons/gr";
-import { CgMergeVertical, CgMergeHorizontal } from "react-icons/cg";
-import { IoIosImage } from "react-icons/io";
-import ReactCrop from "react-image-crop";
-import Draggable from "react-draggable";
-import "react-image-crop/dist/ReactCrop.css";
+import React, { useState, useRef } from 'react'
+import { GrRotateLeft, GrRotateRight } from 'react-icons/gr'
+import { CgMergeVertical, CgMergeHorizontal } from 'react-icons/cg'
+import { IoIosImage } from 'react-icons/io'
+import ReactCrop from 'react-image-crop'
+import Draggable from 'react-draggable'
+import 'react-image-crop/dist/ReactCrop.css'
 
 const ImageEditor = () => {
   const filterElement = [
@@ -14,85 +14,81 @@ const ImageEditor = () => {
     { name: "Saturation", property: "saturation", value: 100, range: { min: 0, max: 200 }, unit: "%" },
     { name: "Contrast", property: "contrast", value: 100, range: { min: 0, max: 200 }, unit: "%" },
     { name: "Hue", property: "hueRotate", value: 0, range: { min: 0, max: 360 }, unit: "deg" },
-  ];
+  ]
 
-  const [details, setDetails] = useState("");
-  const [crop, setCrop] = useState("");
-  const [isCropping, setIsCropping] = useState(false);
+  const [details, setDetails] = useState("")
+  const [crop, setCrop] = useState("")
+  const [isCropping, setIsCropping] = useState(false)
   const [originalImage, setOriginalImage] = useState("")
   const [state, setState] = useState({
     image: "", brightness: 100, grayscale: 0, sepia: 0, saturation: 100, contrast: 100, hueRotate: 0, rotate: 0, vertical: 1, horizontal: 1,
     activeFilter: "brightness",
-  });
+  })
 
-  // Text overlay state
   const [textOverlay, setTextOverlay] = useState({
     text: "", x: 50, y: 50, fontSize: 32, color: "#ffffff", fontFamily: "Arial", bold: false, italic: false,
-  });
+  })
 
-  const imageWindowRef = useRef(null);
-  const textNodeRef = useRef(null); // The text node ref for Draggable
+  const imageWindowRef = useRef(null)
+  const textNodeRef = useRef(null)
 
-  // Helper to update text overlay state
   const handleTextOverlayChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked } = e.target
     setTextOverlay((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+    }))
+  }
 
   const handleDrag = (e, data) => {
-    const container = imageWindowRef.current;
-    if (!container) return;
+    const container = imageWindowRef.current
+    if (!container) return
     const { width, height } = container.getBoundingClientRect();
-    const xPercent = ((data.x + textOverlay.fontSize / 2) / width) * 100;
-    const yPercent = ((data.y + textOverlay.fontSize / 2) / height) * 100;
+    const xPercent = ((data.x + textOverlay.fontSize / 2) / width) * 100
+    const yPercent = ((data.y + textOverlay.fontSize / 2) / height) * 100
     setTextOverlay((prev) => ({
       ...prev,
       x: Math.max(0, Math.min(100, xPercent)),
       y: Math.max(0, Math.min(100, yPercent)),
-    }));
-  };
+    }))
+  }
 
-  // Calculate pixel position for draggable
   const getTextPixelPosition = () => {
-    const container = imageWindowRef.current;
-    if (!container) return { x: 0, y: 0 };
-    const { width, height } = container.getBoundingClientRect();
+    const container = imageWindowRef.current
+    if (!container) return { x: 0, y: 0 }
+    const { width, height } = container.getBoundingClientRect()
     return {
       x: (textOverlay.x / 100) * width - textOverlay.fontSize / 2,
       y: (textOverlay.y / 100) * height - textOverlay.fontSize / 2,
-    };
-  };
+    }
+  }
 
-  // Draw text on canvas
-  function drawTextOnCanvas(ctx, overlay, canvasWidth, canvasHeight) {
-    if (!overlay.text) return;
-    ctx.save();
-    let font = "";
-    if (overlay.italic) font += "italic ";
-    if (overlay.bold) font += "bold ";
-    font += `${overlay.fontSize}px ${overlay.fontFamily}`;
-    ctx.font = font;
-    ctx.fillStyle = overlay.color;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.shadowColor = "#000";
-    ctx.shadowBlur = 4;
-    const x = (overlay.x / 100) * canvasWidth;
-    const y = (overlay.y / 100) * canvasHeight;
-    ctx.fillText(overlay.text, x, y);
-    ctx.restore();
+  function textOnCanvas(ctx, overlay, canvasWidth, canvasHeight) {
+    if (!overlay.text) return
+    ctx.save()
+    let font = ""
+    if (overlay.italic) font += "italic "
+    if (overlay.bold) font += "bold "
+    font += `${overlay.fontSize}px ${overlay.fontFamily}`
+    ctx.font = font
+    ctx.fillStyle = overlay.color
+    ctx.textAlign = "center"
+    ctx.textBaseline = "middle"
+    ctx.shadowColor = "#000"
+    ctx.shadowBlur = 4
+    const x = (overlay.x / 100) * canvasWidth
+    const y = (overlay.y / 100) * canvasHeight
+    ctx.fillText(overlay.text, x, y)
+    ctx.restore()
   }
 
   const imageCrop = () => {
-    const canvas = document.createElement("canvas");
-    const scaleX = details.naturalWidth / details.width;
-    const scaleY = details.naturalHeight / details.height;
-    canvas.width = crop.width;
-    canvas.height = crop.height;
-    const ctx = canvas.getContext("2d");
+    const canvas = document.createElement("canvas")
+    const scaleX = details.naturalWidth / details.width
+    const scaleY = details.naturalHeight / details.height
+    canvas.width = crop.width
+    canvas.height = crop.height
+    const ctx = canvas.getContext("2d")
     ctx.drawImage(
       details,
       crop.x * scaleX,
@@ -103,23 +99,23 @@ const ImageEditor = () => {
       0,
       crop.width,
       crop.height
-    );
-    // Adjust text position to crop:
-    const origX = (textOverlay.x / 100) * details.width;
-    const origY = (textOverlay.y / 100) * details.height;
-    const relX = ((origX - crop.x) / crop.width) * 100;
-    const relY = ((origY - crop.y) / crop.height) * 100;
+    )
+
+    const origX = (textOverlay.x / 100) * details.width
+    const origY = (textOverlay.y / 100) * details.height
+    const relX = ((origX - crop.x) / crop.width) * 100
+    const relY = ((origY - crop.y) / crop.height) * 100
     const adjTextOverlay = {
       ...textOverlay,
       x: Math.max(0, Math.min(100, relX)),
       y: Math.max(0, Math.min(100, relY))
-    };
-    drawTextOnCanvas(ctx, adjTextOverlay, canvas.width, canvas.height);
-    const base64Url = canvas.toDataURL("image/jpg");
+    }
+    textOnCanvas(ctx, adjTextOverlay, canvas.width, canvas.height)
+    const base64Url = canvas.toDataURL("image/jpg")
     setState({
       ...state,
       image: base64Url,
-    });
+    })
     setTextOverlay({
       text: "",
       x: 50,
@@ -129,72 +125,72 @@ const ImageEditor = () => {
       fontFamily: "Arial",
       bold: false,
       italic: false,
-    });
-    setIsCropping(false);
-    setCrop("");
-  };  
+    })
+    setIsCropping(false)
+    setCrop("")
+  }
   
   const saveImage = () => {
-    const canvas = document.createElement("canvas");
-    canvas.width = details.naturalWidth;
-    canvas.height = details.naturalHeight;
-    const ctx = canvas.getContext("2d");
+    const canvas = document.createElement("canvas")
+    canvas.width = details.naturalWidth
+    canvas.height = details.naturalHeight
+    const ctx = canvas.getContext("2d")
     ctx.filter = `brightness(${state.brightness}%) 
         grayscale(${state.grayscale}%) 
         sepia(${state.sepia}%)
         saturate(${state.saturation}%)
         contrast(${state.contrast}%)
-        hue-rotate(${state.hueRotate}deg)`;
+        hue-rotate(${state.hueRotate}deg)`
 
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate((state.rotate * Math.PI) / 180);
-    ctx.scale(state.vertical, state.horizontal);
+    ctx.translate(canvas.width / 2, canvas.height / 2)
+    ctx.rotate((state.rotate * Math.PI) / 180)
+    ctx.scale(state.vertical, state.horizontal)
     ctx.drawImage(
       details,
       -canvas.width / 2,
       -canvas.height / 2,
       canvas.width,
       canvas.height
-    );
-    // Draw text overlay on saved image
-    drawTextOnCanvas(ctx, textOverlay, canvas.width, canvas.height);
-    const link = document.createElement("a");
-    link.download = "image_edit.jpg";
-    link.href = canvas.toDataURL();
-    link.click();
-  };
+    )
+
+    textOnCanvas(ctx, textOverlay, canvas.width, canvas.height)
+    const link = document.createElement("a")
+    link.download = "image_edit.jpg"
+    link.href = canvas.toDataURL()
+    link.click()
+  }
 
   const imageHandler = (e) => {
     if (e.target.files.length !== 0) {
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = () => {
-        setOriginalImage(reader.result); // Save the original
+        setOriginalImage(reader.result)
         setState((prevState) => ({
           ...prevState,
           image: reader.result,
-        }));
-      };
-      reader.readAsDataURL(e.target.files[0]);
+        }))
+      }
+      reader.readAsDataURL(e.target.files[0])
     }
-  };  
+  }  
 
   const handleFilterChange = (e) => {
     setState({
       ...state,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
   const resetFilters = () => {
-    setState({...state, image: originalImage, brightness: 100, grayscale: 0, sepia: 0, saturation: 100, contrast: 100, hueRotate: 0, rotate: 0, vertical: 1, horizontal: 1});
+    setState({...state, image: originalImage, brightness: 100, grayscale: 0, sepia: 0, saturation: 100, contrast: 100, hueRotate: 0, rotate: 0, vertical: 1, horizontal: 1})
     setTextOverlay({text: "", x: 50, y: 50, fontSize: 32, color: "#ffffff", fontFamily: "Arial", bold: false, italic: false})
     setIsCropping(false)
     setCrop("")
-  };
+  }
 
   const getActiveFilterData = () => {
     return filterElement.find((filter) => filter.property === state.activeFilter)
-  };
+  }
 
   return (
     <div className="image_editor">
@@ -287,7 +283,6 @@ const ImageEditor = () => {
                   Drag the text on the image to reposition.
                 </div>
               </div>
-              {/* End Text Overlay Controls */}
             </div>
           </div>
 
@@ -328,7 +323,7 @@ const ImageEditor = () => {
                       }}
                       src={state.image}
                       alt="Edited"/>
-                    {/* Draggable Text Overlay */}
+                    {/* Draggin the text overlay */}
                     {textOverlay.text && (
                       <Draggable bounds="parent" position={getTextPixelPosition()} onDrag={handleDrag} nodeRef={textNodeRef} grid={[1, 1]}>
                         <span ref={textNodeRef}
@@ -393,7 +388,7 @@ const ImageEditor = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default ImageEditor;
