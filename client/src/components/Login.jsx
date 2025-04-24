@@ -61,7 +61,7 @@ const Login = () => {
         <form onSubmit={onSubmitHandler}
         className='relative bg-white p-10 rounded-xl text-slate-500'>
             <h1 className='text-center text-2xl text-neutral-700 font-medium'>{state}</h1>
-            <p className='text-sm'>Please sign in to continue</p>
+            <p className='text-sm text-center'>Please sign in to continue</p>
             {/* Sign in */}
             {/* Whenever {state} is not 'login', the 'Full Name' code will be shown (true), else not*/}
             {state !== 'Login' && 
